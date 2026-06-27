@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }} · Nova{% endblock %}
+{% block content %}
+
+<section class="pdp">
+  <div class="pdp-image reveal">
+    <img src="{{ product.display_image }}" alt="{{ product.name }}">
+    {% if product.on_sale %}<span class="badge big">−{{ product.discount_pct }}%</span>{% endif %}
+  </div>
+  <div class="pdp-info">
+    <div class="kicker reveal">— {{ product.category.name|default:"Object" }}</div>
+    <h1 class="display reveal">{{ product.name }}</h1>
+    {% if product.tagline %}<p class="lede reveal">{{ product.tagline }}</p>{% endif %}
+    <div class="price-row reveal">
+      <span class="price-now">${{ product.price }}</span>
+      {% if product.on_sale %}<s class="price-was">${{ product.compare_at }}</s>{% endif %}
+    </div>
+    <form method="post" action="{% url 'shop:cart_add' product.id %}" class="add-form reveal">
+      {% csrf_token %}
+      <div class="qty">
+        <button type="button" data-qty="-1" aria-label="Decrease">−</button>
+        <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}">
+        <button type="button" data-qty="+1" aria-label="Increase">+</button>
+      </div>
+      <button type="submit" class="cta solid" data-cursor="hover">
+        <span>Add to bag</span><span class="cta-arrow">→</span>
+      </button>
+    </form>
+    {% if product.description %}
+      <div class="pdp-desc reveal">
+        <h4>Details</h4>
+        <p>{{ product.description|linebreaksbr }}</p>
+      </div>
+    {% endif %}
+    <div class="pdp-meta reveal">
+      <div><span>Free shipping</span> over $80</div>
+      <div><span>14-day</span> returns</div>
+      <div><span>In stock</span> {{ product.stock }} pieces</div>
+    </div>
+  </div>
+</section>
+
+{% if related %}
+<section class="section">
+  <div class="section-head">
+    <span class="kicker">— You may also like</span>
+    <h2 class="display">Pairs nicely with.</h2>
+  </div>
+  <div class="grid product-grid">
+    {% for p in related %}
+      <a href="{{ p.get_absolute_url }}" class="card reveal" data-cursor="hover" style="--i:{{ forloop.counter0 }}">
+        <div class="card-image">
+          <img src="{{ p.display_image }}" alt="{{ p.name }}" loading="lazy">
+        </div>
+        <div class="card-meta">
+          <div>
+            <div class="card-cat">{{ p.category.name|default:"Object" }}</div>
+            <h3 class="card-name">{{ p.name }}</h3>
+          </div>
+          <div class="card-price">${{ p.price }}</div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Checkout · Nova{% endblock %}
+{% block content %}
+
+<section class="page-head">
+  <span class="kicker reveal">— Checkout</span>
+  <h1 class="display reveal">Where should we send it?</h1>
+</section>
+
+<section class="checkout">
+  <form method="post" class="checkout-form reveal">
+    {% csrf_token %}
+    <div class="fields">
+      {% for field in form %}
+        <div class="field {% if field.name == 'note' or field.name == 'address' %}full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<small class="err">{{ field.errors.0 }}</small>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    <button type="submit" class="cta solid" data-cursor="hover">
+      <span>Place order — ${{ cart.subtotal }}</span><span class="cta-arrow">→</span>
+    </button>
+  </form>
+
+  <aside class="checkout-summary reveal">
+    <h3>Your bag</h3>
+    <ul>
+      {% for item in cart %}
+        <li>
+          <img src="{{ item.product.display_image }}" alt="">
+          <div>
+            <div class="cart-name">{{ item.product.name }}</div>
+            <div class="muted small">× {{ item.quantity }}</div>
+          </div>
+          <span>${{ item.total }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="row total"><span>Total</span><span>${{ cart.subtotal }}</span></div>
+  </aside>
+</section>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Order #{{ order.id }} · Nova{% endblock %}
+{% block content %}
+
+<section class="success">
+  <div class="success-mark reveal">
+    <svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="32" cy="32" r="28" class="circ"/>
+      <path d="M20 33 L29 42 L46 24" class="check"/>
+    </svg>
+  </div>
+  <span class="kicker reveal">— Confirmed</span>
+  <h1 class="display reveal">Thank you, {{ order.full_name|cut:" "|slice:":1" }}{{ order.full_name|slice:"1:" }}.</h1>
+  <p class="lede reveal">Your order <strong>#{{ order.id }}</strong> is on its way to being prepared. A receipt has been sent to {{ order.email }}.</p>
+
+  <div class="order-items reveal">
+    {% for item in order.items.all %}
+      <div class="order-item">
+        <span>{{ item.product_name }} × {{ item.quantity }}</span>
+        <span>${{ item.line_total }}</span>
+      </div>
+    {% endfor %}
+    <div class="order-item total"><span>Total</span><span>${{ order.total }}</span></div>
+  </div>
+
+  <a href="{% url 'shop:home' %}" class="cta solid" data-cursor="hover">
+    <span>Back home</span><span class="cta-arrow">→</span>
+  </a>
+</section>
+
+{% endblock %}

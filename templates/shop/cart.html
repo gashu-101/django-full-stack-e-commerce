@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Bag · Nova{% endblock %}
+{% block content %}
+
+<section class="page-head">
+  <span class="kicker reveal">— Your bag</span>
+  <h1 class="display reveal">{% if cart|length %}A fine selection.{% else %}Your bag is empty.{% endif %}</h1>
+</section>
+
+{% if cart|length %}
+<section class="cart">
+  <ul class="cart-list">
+    {% for item in cart %}
+      <li class="cart-item reveal" style="--i:{{ forloop.counter0 }}">
+        <a href="{{ item.product.get_absolute_url }}" class="cart-img">
+          <img src="{{ item.product.display_image }}" alt="{{ item.product.name }}">
+        </a>
+        <div class="cart-body">
+          <div class="cart-top">
+            <div>
+              <div class="card-cat">{{ item.product.category.name|default:"Object" }}</div>
+              <h3 class="cart-name">{{ item.product.name }}</h3>
+            </div>
+            <div class="cart-price">${{ item.total }}</div>
+          </div>
+          <div class="cart-bottom">
+            <form method="post" action="{% url 'shop:cart_add' item.product.id %}" class="qty inline">
+              {% csrf_token %}
+              <input type="hidden" name="override" value="1">
+              <button type="button" data-qty="-1">−</button>
+              <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}">
+              <button type="button" data-qty="+1">+</button>
+              <button type="submit" class="qty-update" aria-label="Update">↻</button>
+            </form>
+            <form method="post" action="{% url 'shop:cart_remove' item.product.id %}">
+              {% csrf_token %}
+              <button type="submit" class="link-remove">Remove</button>
+            </form>
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <aside class="cart-summary reveal">
+    <h3>Summary</h3>
+    <div class="row"><span>Subtotal</span><span>${{ cart.subtotal }}</span></div>
+    <div class="row"><span>Shipping</span><span class="muted">Calculated at checkout</span></div>
+    <div class="row total"><span>Total</span><span>${{ cart.subtotal }}</span></div>
+    <a href="{% url 'shop:checkout' %}" class="cta solid full" data-cursor="hover">
+      <span>Checkout</span><span class="cta-arrow">→</span>
+    </a>
+    <a href="{% url 'shop:shop' %}" class="link-back">← Keep shopping</a>
+  </aside>
+</section>
+{% else %}
+  <div class="empty">
+    <a href="{% url 'shop:shop' %}" class="cta solid" data-cursor="hover">
+      <span>Find something lovely</span><span class="cta-arrow">→</span>
+    </a>
+  </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-eyebrow reveal">
+    <span class="dot"></span> New collection · Summer 2026
+  </div>
+  <h1 class="hero-title">
+    <span class="reveal-line"><em>Objects</em></span>
+    <span class="reveal-line">of considered</span>
+    <span class="reveal-line">design.</span>
+  </h1>
+  <div class="hero-bottom">
+    <p class="reveal">A small, slow studio assembling pieces<br>made to be lived with — not replaced.</p>
+    <a href="{% url 'shop:shop' %}" class="cta reveal" data-cursor="hover">
+      <span>Explore the shop</span>
+      <span class="cta-arrow">→</span>
+    </a>
+  </div>
+  <div class="hero-meta">
+    <div class="reveal"><span class="num">{{ latest|length }}+</span><span class="lbl">Pieces in stock</span></div>
+    <div class="reveal"><span class="num">14</span><span class="lbl">Days returns</span></div>
+    <div class="reveal"><span class="num">100%</span><span class="lbl">Hand inspected</span></div>
+    <div class="reveal"><span class="num">∞</span><span class="lbl">Time spent</span></div>
+  </div>
+</section>
+
+{% if featured %}
+<section class="section">
+  <div class="section-head">
+    <span class="kicker">— Featured</span>
+    <h2 class="display">Quietly extraordinary.</h2>
+  </div>
+  <div class="grid feature-grid">
+    {% for p in featured %}
+      <a href="{{ p.get_absolute_url }}" class="card reveal" data-cursor="hover" style="--i:{{ forloop.counter0 }}">
+        <div class="card-image">
+          <img src="{{ p.display_image }}" alt="{{ p.name }}" loading="lazy">
+          {% if p.on_sale %}<span class="badge">−{{ p.discount_pct }}%</span>{% endif %}
+        </div>
+        <div class="card-meta">
+          <div>
+            <div class="card-cat">{{ p.category.name|default:"Object" }}</div>
+            <h3 class="card-name">{{ p.name }}</h3>
+          </div>
+          <div class="card-price">
+            ${{ p.price }}
+            {% if p.on_sale %}<s>${{ p.compare_at }}</s>{% endif %}
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="band">
+  <div class="band-inner">
+    <div class="band-track">
+      {% for i in "1234"|make_list %}
+        <span>NOVA</span>
+        <span class="band-dot">●</span>
+        <span><em>Slow design</em></span>
+        <span class="band-dot">●</span>
+        <span>Est. 2026</span>
+        <span class="band-dot">●</span>
+        <span><em>Less, better</em></span>
+        <span class="band-dot">●</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <span class="kicker">— Just in</span>
+    <h2 class="display">The latest arrivals.</h2>
+    <a href="{% url 'shop:shop' %}" class="link-arrow" data-cursor="hover">View all <span>→</span></a>
+  </div>
+  <div class="grid product-grid">
+    {% for p in latest %}
+      <a href="{{ p.get_absolute_url }}" class="card reveal" data-cursor="hover" style="--i:{{ forloop.counter0 }}">
+        <div class="card-image">
+          <img src="{{ p.display_image }}" alt="{{ p.name }}" loading="lazy">
+          {% if p.on_sale %}<span class="badge">−{{ p.discount_pct }}%</span>{% endif %}
+        </div>
+        <div class="card-meta">
+          <div>
+            <div class="card-cat">{{ p.category.name|default:"Object" }}</div>
+            <h3 class="card-name">{{ p.name }}</h3>
+          </div>
+          <div class="card-price">
+            ${{ p.price }}
+            {% if p.on_sale %}<s>${{ p.compare_at }}</s>{% endif %}
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="manifesto">
+  <p class="reveal">
+    We believe in things <em>made well</em>, that age beautifully, and earn
+    their place. Every piece in Nova is selected slowly — and shipped with care.
+  </p>
+</section>
+
+{% endblock %}

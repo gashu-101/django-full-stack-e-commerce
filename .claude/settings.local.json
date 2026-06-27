@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:odit.et)",
+      "Bash(python -m django --version)",
+      "Bash(pip --version)",
+      "Bash(pip install *)",
+      "Bash(django-admin startproject *)",
+      "Bash(python manage.py startapp shop)",
+      "Bash(python manage.py makemigrations shop)",
+      "Bash(python manage.py migrate)",
+      "Bash(python manage.py seed)",
+      "Bash(python -c \"import os; os.environ.setdefault\\('DJANGO_SETTINGS_MODULE','nova.settings'\\); import django; django.setup\\(\\); from django.contrib.auth.models import User; u,c = User.objects.get_or_create\\(username='admin', defaults={'is_staff':True,'is_superuser':True,'email':'admin@nova.local'}\\); u.set_password\\('admin'\\); u.save\\(\\); print\\('admin user created' if c else 'admin user updated'\\)\")",
+      "Bash(python manage.py check)",
+      "Bash(python manage.py runserver 127.0.0.1:8765 --noreload)",
+      "Bash(curl -s -o /dev/null -w \"home: %{http_code}\\\\n\" http://127.0.0.1:8765/)",
+      "Bash(curl -s -o /dev/null -w \"shop: %{http_code}\\\\n\" http://127.0.0.1:8765/shop/)",
+      "Bash(curl -s -o /dev/null -w \"cart: %{http_code}\\\\n\" http://127.0.0.1:8765/cart/)",
+      "Bash(curl -s -o /dev/null -w \"admin: %{http_code}\\\\n\" http://127.0.0.1:8765/admin/)",
+      "Bash(curl -s http://127.0.0.1:8765/)",
+      "Bash(curl -s http://127.0.0.1:8765/shop/)",
+      "Bash(curl -s -o /dev/null -w \"pdp: %{http_code}\\\\n\" http://127.0.0.1:8765/p/walnut-salad-server/)",
+      "Bash(curl -s -o /dev/null -w \"checkout \\(empty cart, expect redirect\\): %{http_code}\\\\n\" http://127.0.0.1:8765/checkout/)",
+      "Bash(python *)"
+    ]
+  }
+}

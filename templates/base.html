@@ -1,0 +1,95 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}NOVA — Objects of considered design{% endblock %}</title>
+<meta name="description" content="A curated collection of beautifully made things.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='90' font-family='serif'>N</text></svg>">
+</head>
+<body>
+
+<div class="cursor" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a href="{% url 'shop:home' %}" class="logo" data-cursor="hover">
+    <span class="logo-mark">N</span><span class="logo-word">ova</span>
+  </a>
+  <nav class="nav-links">
+    <a href="{% url 'shop:shop' %}" data-cursor="hover">Shop</a>
+    {% for cat in nav_categories %}
+      <a href="{% url 'shop:shop_by_category' cat.slug %}" data-cursor="hover">{{ cat.name }}</a>
+    {% endfor %}
+  </nav>
+  <a href="{% url 'shop:cart_detail' %}" class="nav-cart" data-cursor="hover">
+    <span>Bag</span>
+    <span class="cart-pill" id="cart-pill">{{ cart_count|default:0 }}</span>
+  </a>
+</header>
+
+{% if messages %}
+<div class="toasts">
+  {% for message in messages %}
+    <div class="toast">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      {% for i in "12345"|make_list %}
+        <span>Designed to last</span><span>·</span>
+        <span>Considered objects</span><span>·</span>
+        <span>Free shipping over $80</span><span>·</span>
+        <span>Made by hand</span><span>·</span>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="footer-grid">
+    <div>
+      <h3 class="display">Nova</h3>
+      <p class="muted">A small studio assembling objects we love to live with.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="{% url 'shop:shop' %}">All</a></li>
+        {% for cat in nav_categories %}
+          <li><a href="{% url 'shop:shop_by_category' cat.slug %}">{{ cat.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div>
+      <h4>Studio</h4>
+      <ul>
+        <li><a href="#">Journal</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="/admin/">Admin</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <form class="newsletter" onsubmit="event.preventDefault(); this.querySelector('button').textContent='✓ Subscribed';">
+        <input type="email" placeholder="you@studio.com" required>
+        <button type="submit">→</button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© {{ 2026 }} Nova Studio</span>
+    <span>Crafted with intention</span>
+  </div>
+</footer>
+
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

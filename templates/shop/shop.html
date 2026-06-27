@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Shop · Nova{% endblock %}
+{% block content %}
+
+<section class="page-head">
+  <span class="kicker reveal">— Shop</span>
+  <h1 class="display reveal">{% if current_category %}{{ current_category.name }}{% else %}Everything we make.{% endif %}</h1>
+  <form method="get" class="search reveal">
+    <input type="search" name="q" placeholder="Search the shop…" value="{{ q }}">
+    <button type="submit" aria-label="Search">→</button>
+  </form>
+</section>
+
+<div class="shop-layout">
+  <aside class="filters">
+    <div class="filter-group">
+      <h4>Category</h4>
+      <ul>
+        <li><a href="{% url 'shop:shop' %}" class="{% if not current_category %}active{% endif %}">All</a></li>
+        {% for cat in categories %}
+          <li><a href="{% url 'shop:shop_by_category' cat.slug %}" class="{% if current_category.slug == cat.slug %}active{% endif %}">{{ cat.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </aside>
+
+  <div class="grid product-grid">
+    {% for p in products %}
+      <a href="{{ p.get_absolute_url }}" class="card reveal" data-cursor="hover" style="--i:{{ forloop.counter0 }}">
+        <div class="card-image">
+          <img src="{{ p.display_image }}" alt="{{ p.name }}" loading="lazy">
+          {% if p.on_sale %}<span class="badge">−{{ p.discount_pct }}%</span>{% endif %}
+        </div>
+        <div class="card-meta">
+          <div>
+            <div class="card-cat">{{ p.category.name|default:"Object" }}</div>
+            <h3 class="card-name">{{ p.name }}</h3>
+          </div>
+          <div class="card-price">
+            ${{ p.price }}
+            {% if p.on_sale %}<s>${{ p.compare_at }}</s>{% endif %}
+          </div>
+        </div>
+      </a>
+    {% empty %}
+      <p class="muted">No products yet. Add some from the <a href="/admin/">admin</a>.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
