@@ -19,9 +19,49 @@
         </div>
       {% endfor %}
     </div>
+
+    <h3 class="pay-title">Payment method</h3>
+    <div class="pay-methods">
+      <label class="pay-card">
+        <input type="radio" name="payment_method" value="chapa" {% if not chapa_enabled %}disabled{% endif %} {% if chapa_enabled %}checked{% endif %}>
+        <div class="pay-card-inner">
+          <div class="pay-card-top">
+            <div class="pay-logo chapa">CHAPA</div>
+            {% if not chapa_enabled %}<span class="pay-tag muted">Not configured</span>{% endif %}
+          </div>
+          <h4>Pay with Chapa</h4>
+          <p>Telebirr · CBE · Awash · M-PESA · Cards.<br>≈ {{ chapa_estimated }} {{ chapa_currency }}</p>
+        </div>
+      </label>
+
+      <label class="pay-card">
+        <input type="radio" name="payment_method" value="crypto" {% if not crypto_enabled %}disabled{% endif %} {% if not chapa_enabled and crypto_enabled %}checked{% endif %}>
+        <div class="pay-card-inner">
+          <div class="pay-card-top">
+            <div class="pay-logo crypto">₿ Ξ</div>
+            {% if not crypto_enabled %}<span class="pay-tag muted">Not configured</span>{% endif %}
+          </div>
+          <h4>Pay with crypto</h4>
+          <p>BTC, ETH, USDT and 100+ assets via NOWPayments.</p>
+        </div>
+      </label>
+
+      <label class="pay-card">
+        <input type="radio" name="payment_method" value="cod" {% if not chapa_enabled and not crypto_enabled %}checked{% endif %}>
+        <div class="pay-card-inner">
+          <div class="pay-card-top">
+            <div class="pay-logo cod">COD</div>
+          </div>
+          <h4>Cash on delivery</h4>
+          <p>Pay when your order arrives at the door.</p>
+        </div>
+      </label>
+    </div>
+
     <button type="submit" class="cta solid" data-cursor="hover">
       <span>Place order — ${{ cart.subtotal }}</span><span class="cta-arrow">→</span>
     </button>
+    <p class="pay-foot muted">You'll be redirected to your chosen payment provider. Order ships once payment is confirmed.</p>
   </form>
 
   <aside class="checkout-summary reveal">

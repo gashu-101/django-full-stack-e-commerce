@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Payment failed · Nova{% endblock %}
+{% block content %}
+
+<section class="success">
+  <div class="fail-mark reveal">
+    <svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="32" cy="32" r="28"/>
+      <path d="M22 22 L42 42 M42 22 L22 42"/>
+    </svg>
+  </div>
+  <span class="kicker reveal">— Payment not completed</span>
+  <h1 class="display reveal">That didn't go through.</h1>
+  <p class="lede reveal">
+    Your order <strong>#{{ order.id }}</strong> is on hold. No charge was captured. You can try again with a different method.
+  </p>
+  <div class="pending-actions">
+    <a href="{% url 'shop:checkout' %}" class="cta solid" data-cursor="hover">
+      <span>Try again</span><span class="cta-arrow">→</span>
+    </a>
+    <a href="{% url 'shop:home' %}" class="link-back">← Back home</a>
+  </div>
+  <p class="muted small">Reference: <code>{{ order.tx_ref }}</code></p>
+</section>
+
+{% endblock %}

@@ -9,9 +9,13 @@
       <path d="M20 33 L29 42 L46 24" class="check"/>
     </svg>
   </div>
-  <span class="kicker reveal">— Confirmed</span>
-  <h1 class="display reveal">Thank you, {{ order.full_name|cut:" "|slice:":1" }}{{ order.full_name|slice:"1:" }}.</h1>
-  <p class="lede reveal">Your order <strong>#{{ order.id }}</strong> is on its way to being prepared. A receipt has been sent to {{ order.email }}.</p>
+  <span class="kicker reveal">— {% if order.status == 'paid' %}Payment confirmed{% else %}Order confirmed{% endif %}</span>
+  <h1 class="display reveal">Thank you, {{ order.first_name }}.</h1>
+  <p class="lede reveal">
+    Order <strong>#{{ order.id }}</strong> is in our hands.
+    {% if order.status == 'paid' %}Payment received and recorded.{% else %}{{ order.get_payment_method_display }} — we'll start preparing it shortly.{% endif %}
+    A receipt has been sent to <strong>{{ order.email }}</strong>.
+  </p>
 
   <div class="order-items reveal">
     {% for item in order.items.all %}
@@ -22,6 +26,8 @@
     {% endfor %}
     <div class="order-item total"><span>Total</span><span>${{ order.total }}</span></div>
   </div>
+
+  <p class="muted small">Reference: <code>{{ order.tx_ref }}</code> · {{ order.get_status_display }}</p>
 
   <a href="{% url 'shop:home' %}" class="cta solid" data-cursor="hover">
     <span>Back home</span><span class="cta-arrow">→</span>

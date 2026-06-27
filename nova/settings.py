@@ -1,9 +1,19 @@
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
+
+# Force UTF-8 on Windows stdio so the console email backend can render
+# unicode characters like → without choking on cp1252.
+if sys.platform == 'win32':
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding='utf-8', errors='replace')
+        except (AttributeError, ValueError):
+            pass
 
 
 def env(key, default=None):

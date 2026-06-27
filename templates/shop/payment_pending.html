@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Awaiting payment · Nova{% endblock %}
+{% block content %}
+
+<section class="success">
+  <div class="pulse-mark reveal">
+    <svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="32" cy="32" r="28" class="circ-spin"/>
+      <circle cx="32" cy="32" r="6" fill="currentColor" opacity=".4"/>
+    </svg>
+  </div>
+  <span class="kicker reveal">— Awaiting confirmation</span>
+  <h1 class="display reveal">Almost there.</h1>
+  <p class="lede reveal">
+    {% if is_crypto %}
+      Your crypto transaction needs a few network confirmations. We'll email <strong>{{ order.email }}</strong> the moment it's confirmed — usually within a few minutes.
+    {% else %}
+      Your payment is processing. We'll send a confirmation to <strong>{{ order.email }}</strong> as soon as it lands.
+    {% endif %}
+  </p>
+
+  <div class="order-items reveal">
+    {% for item in order.items.all %}
+      <div class="order-item"><span>{{ item.product_name }} × {{ item.quantity }}</span><span>${{ item.line_total }}</span></div>
+    {% endfor %}
+    <div class="order-item total"><span>Total</span><span>${{ order.total }}</span></div>
+  </div>
+
+  <div class="pending-actions">
+    {% if order.payment_url %}
+      <a href="{{ order.payment_url }}" class="cta solid" data-cursor="hover">
+        <span>Resume payment</span><span class="cta-arrow">→</span>
+      </a>
+    {% endif %}
+    <a href="{% url 'shop:home' %}" class="link-back">← Back home</a>
+  </div>
+  <p class="muted small">Reference: <code>{{ order.tx_ref }}</code></p>
+</section>
+
+{% endblock %}

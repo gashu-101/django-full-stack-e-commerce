@@ -21,7 +21,15 @@
       "Bash(curl -s http://127.0.0.1:8765/shop/)",
       "Bash(curl -s -o /dev/null -w \"pdp: %{http_code}\\\\n\" http://127.0.0.1:8765/p/walnut-salad-server/)",
       "Bash(curl -s -o /dev/null -w \"checkout \\(empty cart, expect redirect\\): %{http_code}\\\\n\" http://127.0.0.1:8765/checkout/)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "Bash(curl -s -o /dev/null -w \"home:        %{http_code}\\\\n\" http://127.0.0.1:8765/)",
+      "Bash(curl -s -o /dev/null -w \"shop:        %{http_code}\\\\n\" http://127.0.0.1:8765/shop/)",
+      "Bash(curl -s -o /dev/null -w \"checkout:    %{http_code}\\\\n\" http://127.0.0.1:8765/checkout/)",
+      "Bash(curl -s -o /dev/null -w \"chapa hook:  %{http_code}\\\\n\" -X POST -H \"Content-Type: application/json\" -d '{}' http://127.0.0.1:8765/pay/chapa/webhook/)",
+      "Bash(curl -s -o /dev/null -w \"crypto hook: %{http_code}\\\\n\" -X POST -H \"Content-Type: application/json\" -d '{}' http://127.0.0.1:8765/pay/crypto/webhook/)",
+      "Bash(curl -s -o /dev/null -w \"chapa hook \\(no sig, expect 400\\):  %{http_code}\\\\n\" -X POST -H \"Content-Type: application/json\" -d '{}' http://127.0.0.1:8765/pay/chapa/webhook/)",
+      "Bash(curl -s -o /dev/null -w \"crypto hook \\(no sig, expect 400\\): %{http_code}\\\\n\" -X POST -H \"Content-Type: application/json\" -d '{}' http://127.0.0.1:8765/pay/crypto/webhook/)",
+      "Bash(curl -s -o /dev/null -w \"chapa hook GET \\(expect 405\\):     %{http_code}\\\\n\" http://127.0.0.1:8765/pay/chapa/webhook/)"
     ]
   }
 }

@@ -630,6 +630,69 @@ main{ min-height:60vh; }
 }
 @media (max-width:520px){ .footer-bottom{ flex-direction:column; gap:8px; text-align:center; } }
 
+/* Payment methods */
+.pay-title{
+  font-family:'Inter', sans-serif; font-size:12px;
+  letter-spacing:.15em; text-transform:uppercase;
+  color:var(--muted); font-weight:500;
+  margin:36px 0 14px;
+}
+.pay-methods{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
+  margin-bottom:24px;
+}
+@media (max-width:720px){ .pay-methods{ grid-template-columns:1fr; } }
+.pay-card{
+  position:relative; cursor:pointer; display:block;
+  border:1.5px solid var(--line);
+  border-radius:var(--radius); padding:18px;
+  background:var(--paper);
+  transition:border-color var(--t), transform var(--t), box-shadow var(--t);
+}
+.pay-card:hover{ transform:translateY(-2px); border-color:rgba(15,15,14,.25); }
+.pay-card input{ position:absolute; opacity:0; pointer-events:none; }
+.pay-card input:disabled + .pay-card-inner{ opacity:.45; cursor:not-allowed; }
+.pay-card:has(input:checked){
+  border-color:var(--ink);
+  box-shadow:0 8px 28px rgba(15,15,14,.08), inset 0 0 0 1px var(--ink);
+}
+.pay-card-inner{ display:flex; flex-direction:column; gap:8px; }
+.pay-card-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.pay-logo{
+  font-family:'Fraunces', serif; font-weight:500;
+  font-size:14px; letter-spacing:.12em;
+  padding:6px 12px; border-radius:8px;
+  background:var(--ink); color:var(--paper);
+}
+.pay-logo.chapa{ background:#7C3AED; color:#fff; letter-spacing:.18em; }
+.pay-logo.crypto{
+  background:linear-gradient(135deg, #F7931A, #627EEA);
+  color:#fff; letter-spacing:.06em;
+}
+.pay-logo.cod{ background:var(--accent); color:var(--paper); }
+.pay-tag{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
+.pay-card h4{
+  font-family:'Fraunces', serif; font-size:19px; margin:0;
+  font-weight:400; letter-spacing:-.01em;
+}
+.pay-card p{ font-size:13px; color:var(--ink-2); margin:0; line-height:1.45; }
+.pay-foot{ margin-top:14px; font-size:13px; }
+
+/* Pending / failed marks */
+.pulse-mark{ display:flex; justify-content:center; margin-bottom:30px; color:var(--accent-2); }
+.circ-spin{
+  transform-origin:32px 32px;
+  stroke-dasharray:60 200;
+  animation:spin 1.4s linear infinite;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.fail-mark{ display:flex; justify-content:center; margin-bottom:30px; color:#B91C1C; }
+
+.pending-actions{
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+  margin:24px 0;
+}
+
 /* Reveal-on-scroll */
 .reveal{
   opacity:0; transform:translateY(28px);
